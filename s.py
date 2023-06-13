@@ -23,7 +23,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-K = int(input('Введите коэффициент связи:'))
+K = float(input('Введите коэффициент связи:'))
 
 # Задание параметров модели
 n = 4 # количество гребцов в экипаже
@@ -98,8 +98,8 @@ for i in range(n):
     ax1.plot(np.arange(0,tmax,dt), f[i,:], label='гребец {}'.format(i+1))
 for i in range(n):
     ax2.plot(np.arange(0,tmax,dt), f_2[i, :], label='гребец {}'.format(i + 1))
-ax1.set(xlabel='Время, с', ylabel='Частота опускания весла, 1/t')
-ax2.set(xlabel='Время, с', ylabel='Частота опускания весла, 1/t')
+ax1.set(xlabel='Время, t', ylabel='Частота опускания весла, 1/с')
+ax2.set(xlabel='Время, t', ylabel='Частота опускания весла, 1/с')
 plt.legend()
 plt.show()
 
