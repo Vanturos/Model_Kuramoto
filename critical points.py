@@ -37,7 +37,10 @@ def kuramoto2(f, K1):
             dfdt[i] += K1*(j==0)*np.sin(f[j]-f[i])
     return dfdt
 
-for qwer in range(0, 1000000):
+f1=0
+f2=0
+
+for qwer in range(4990, 5010, 1):
     K = qwer/100
     n = 4
     f0 = 1
@@ -47,34 +50,34 @@ for qwer in range(0, 1000000):
     K1 = 4*K
     K2 = K
 
-    f = np.zeros((n, int(tmax/dt)))
+    if not f1:
+        f = np.zeros((n, int(tmax / dt)))
+        f[:, 0] = np.random.normal(f0, sigma * f0, n)
+        for i in range(len(f[0])-1):
+            f[:,i+1] = f[:,i] + kuramoto1(f[:,i], K1, K2)*dt
 
-    f[:,0] = np.random.normal(f0, sigma*f0, n)
+        for i in range(len(f[0]) - 1):
+            a, b, c, d = f[:, i]
+            x = 0.001
+            if abs(a-b)<x and abs(b-c)<x and abs(c-d)<x and abs(d-a)<x:
+                break
+        else:
+            print('Для случая все - все:')
+            print('нет синхронизации', K)
+            f1=1
 
-    f_2 = np.zeros((n, int(tmax / dt)))
+    if not f2:
+        f_2 = np.zeros((n, int(tmax / dt)))
+        f_2[:, 0] = np.random.normal(f0, sigma * f0, n)
+        for i in range(len(f_2[0]) - 1):
+            f_2[:, i + 1] = f_2[:, i] + kuramoto2(f_2[:, i], K1) * dt
 
-    f_2[:, 0] = np.random.normal(f0, sigma * f0, n)
-
-    for i in range(len(f[0])-1):
-        f[:,i+1] = f[:,i] + kuramoto1(f[:,i], K1, K2)*dt
-
-    for i in range(len(f[0]) - 1):
-        a, b, c, d = f[:, i]
-        x = 0.001
-        if abs(a-b)<x and abs(b-c)<x and abs(c-d)<x and abs(d-a)<x:
-            break
-    else:
-        print('Для случая все - все:')
-        print('нет синхронизации', K)
-
-    for i in range(len(f_2[0]) - 1):
-        f_2[:, i + 1] = f_2[:, i] + kuramoto2(f_2[:, i], K1) * dt
-
-    for i in range(len(f_2[0]) - 1):
-        a, b, c, d = f_2[:, i]
-        x = 0.001
-        if abs(a-b)<x and abs(b-c)<x and abs(c-d)<x and abs(d-a)<x:
-            break
-    else:
-        print('Для случая один - все:')
-        print('нет синхронизации', K)
+        for i in range(len(f_2[0]) - 1):
+            a, b, c, d = f_2[:, i]
+            x = 0.001
+            if abs(a-b)<x and abs(b-c)<x and abs(c-d)<x and abs(d-a)<x:
+                break
+        else:
+            print('Для случая один - все:')
+            print('нет синхронизации', K)
+            f2 = 1
